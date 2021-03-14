@@ -9,7 +9,7 @@ public class Main {
         StringBuilder texto = new StringBuilder("[");
 
         //---Coloque aqui seu documento .txt (Ex: 2, 42, -23, 31) para ordená-lo---
-        int[] vetor = leitura("C:\\Users\\Gustavo\\Desktop\\dados.txt");
+        int[] vetor = leitura("C:\\Users\\Gustavo\\Desktop\\dadosC.txt");
 
         //---Inicio da contagem---
         long tempoInicial = System.currentTimeMillis();
@@ -60,36 +60,50 @@ public class Main {
     //Algoritmo de Ordenacao
     //HeapSort
     public static void heapSort(int[] vetor) {
-        int n = vetor.length;
 
-        for (int i = n / 2 - 1; i >= 0; i--) {
-            heapify(vetor, n, i);
+
+        //metade - 1 para montar o heap
+        for (int i = vetor.length / 2 - 1; i >= 0; i--) {
+            //primeira rearranjada no vetor (Quase ordenado)
+            heapify(vetor, vetor.length, i);
         }
-        for (int i = n - 1; i > 0; i--) {
+
+
+        //diminuir o tamanho do vetor levando o maior (vetor[0]) para o final
+        for (int i = vetor.length - 1; i > 0; i--) {
             int temp = vetor[0];
             vetor[0] = vetor[i];
             vetor[i] = temp;
+            movimentos++;
 
+            //garantir que o maior elemento esteja na posição 0
             heapify(vetor, i, 0);
         }
     }
 
     static void heapify(int[] vetor, int tamanho, int i) {
-        int maior = i; // Inicializar o maior como raiz
-        int esq = 2 * i + 1; // esquerda = 2*i + 1
-        int dir = 2 * i + 2; // direita = 2*i + 2
-        movimentos++;
-        if (esq < tamanho && vetor[esq] > vetor[maior]) {
-            maior = esq;
+        int maior = i; // Inicializar o maior como raiz de modo a ser CRESCENTE
+        int filhoEsq = 2 * i + 1; // filho da esquerda = 2*i + 1
+        int filhoDir = 2 * i + 2; // filho da direita = 2*i + 2
+
+        //se filho da esquerda é maior que o pai
+        if (filhoEsq < tamanho && vetor[filhoEsq] > vetor[maior]) {
+            maior = filhoEsq;
+            movimentos++;
         }
-        if (dir < tamanho && vetor[dir] > vetor[maior]) {
-            maior = dir;
+        if (filhoDir < tamanho && vetor[filhoDir] > vetor[maior]) {
+            maior = filhoDir;
+            movimentos++;
         }
+
+        //se o pai for agora um dos filhos
         if (maior != i) {
             int temp = vetor[i];
             vetor[i] = vetor[maior];
             vetor[maior] = temp;
+            movimentos++;
 
+            //necessario usar recursividade
             heapify(vetor, tamanho, maior);
         }
     }
